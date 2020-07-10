@@ -10,6 +10,7 @@
 #'   and it has minimum OOB MSE in 1:\code{pmax}.}
 #'   \item{p}{optimal lag order,and it has minimum OOB MSE.}
 #' }
+#' @export
 
 
 VARrf <- function(data, pmax = 5, p = NULL, s = 1){

@@ -1,6 +1,7 @@
 #' Generalized IRF
 #'
 #'
+#' @export
 
 
 IRFrf_gen <- function(data,pmax = 5, s = 12, shockvar = 1,ncores = 6){

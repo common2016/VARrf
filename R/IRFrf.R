@@ -9,6 +9,7 @@
 #' @param hist the numerical scalor that represents the time of shock, i.e. row index
 #' of \code{data}.
 #'
+#' @export
 IRFrf <- function(data, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){
   # initialize, and get yvar and shock var
   fit <- VARrf(data = data, p = 1) # just for yvar
