@@ -2,18 +2,32 @@
 % Please edit documentation in R/IRFrf.R
 \name{IRFrf}
 \alias{IRFrf}
-\title{Compute IRF by random forest method}
+\title{Compute Local Projection IRF by Random Forest Method}
 \usage{
-IRFrf(data, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1, histime = 1)
+IRFrf(
+  data,
+  indx = NULL,
+  pmax = 5,
+  p = NULL,
+  s = 12,
+  shockvar = 1,
+  d = 1,
+  histime = 1
+)
 }
 \arguments{
+\item{indx}{if \code{data} is time series, \code{indx} is NULL. If \code{data}
+is panal data, \code{indx} is a character string vector whose length is 2, the 1st element
+is coloumn name of individual id, and the 2nd element is coloumn names of time.}
+
 \item{pmax}{max lag order where select a lag order which has minimum OOB MSE.}
 
 \item{s}{the horizon of IRF}
 
 \item{shockvar}{a numeric scalor which denotes the shock variable.}
 
-\item{d}{the size of shock}
+\item{d}{the size of shock
+Impulse Response Function by Random Forest}
 
 \item{set}{up the lag order directly, and don't select from \code{pmax}.}
 
@@ -21,5 +35,5 @@ IRFrf(data, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1, histime = 1)
 of \code{data}.}
 }
 \description{
-Compute IRF by random forest method
+Compute Local Projection IRF by Random Forest Method
 }

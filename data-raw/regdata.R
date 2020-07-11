@@ -15,10 +15,12 @@ colnames(sim_dt) <- c('y1','y2')
 
 fit <- vars::VAR(sim_dt, p = 2,type = 'none')
 # summary(fit)
+fit <- VARrf(sim_dt)
+fit <- VARrf(sim_dt, p = 4)
 
 # 绘图LP
 picdata <- IRFrf(data = sim_dt, pmax = 5, s = 12, shockvar = 1)
-ggplot(data = picdata, aes(x = s, y = y1)) + geom_line() +
+ggplot(data = picdata, aes(x = s, y = debt)) + geom_line() +
   geom_hline(yintercept = 0) + theme_bw()
 
 IRFrf_gen(data = sim_dt[1:50,], pmax = 5, s = 12, shockvar = 1, ncores = 7)
@@ -26,7 +28,12 @@ IRFrf_gen(data = sim_dt[1:50,], pmax = 5, s = 12, shockvar = 1, ncores = 7)
 # 广义脉冲响应的比较
 ar2ma(B1)
 
+# panel data
+regdata <- openxlsx::read.xlsx('E:\\13_PapersFromFriends\\OuYangZG\\EPUMoneyPolicy\\RCode\\data-raw/2020季度数据.xlsx',1)
+ans <- dt_gen_panel(regdata, indx, s = 2, plag = 2, yname = T)
 
-
+ans <- VARrf(regdata[regdata$num == 39| regdata$num == 49,], indx = c('num','year'), pmax = 15, s = 1)
+picdata <- IRFrf(data = regdata[regdata$num %in% c(39.49,63,66,78),],
+                 indx = c('num','year'),p = 8, s = 12, shockvar = 1)
 
 # usethis::use_data(regdata, overwrite = TRUE)

@@ -1,7 +1,10 @@
 #' Estimate VAR by random forest
 #'
-#' @param data a data.frame
-#' @param pmax a max lag order
+#' @param data a data.frame, and all variables is endogenous variables in VAR.
+#' @param indx if \code{data} is time series, \code{indx} is NULL. If \code{data}
+#' is panal data, \code{indx} is a character string vector whose length is 2, the 1st element
+#' is coloumn name of individual id, and the 2nd element is coloumn names of time.
+#' @param pmax a max lag order, default value is 5.
 #' @param p a fixed lag order. When \code{p} is set up, \code{pmax} is unuseful.
 #' @param  s a horizon in local projections, default is 1. Gnerally don't change it.
 #' @return An list:
@@ -10,27 +13,37 @@
 #'   and it has minimum OOB MSE in 1:\code{pmax}.}
 #'   \item{p}{optimal lag order,and it has minimum OOB MSE.}
 #' }
+#' @examples
+#' B1 <- matrix(c(0.2, 0.1, 0.2, 0.3,0.3,0.4,0.2,0.1), 2)
+#' sim_dt <- vars::VAR.sim(B1, n = 200, lag = 2,include = 'none',show.parMat = T) %>%
+#'   as.data.frame()
+#'   colnames(sim_dt) <- c('y1','y2')
+#'   # fit a VAR with max lag order equal 5
+#'   fit <- VARrf(sim_dt, pmax = 5)
+#'   # fit a VAR with fixed lag order equal 4
+#'   fit <- VARrf(sim_dt, p = 4)
+#'
 #' @export
+#' @import magrittr
 
 
-VARrf <- function(data, pmax = 5, p = NULL, s = 1){
+VARrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 1){
   if (is.null(p)){
     mse_star <- numeric(pmax)
     fit_rf <- list()
+    # select lag order or set up lag order?
     for (i in 1:pmax) {
-      # generate X and Y
-      ans <- bvartools::gen_var(ts(data), p = s - 1 + i, deterministic = 'none')
-      regdata <- cbind(t(ans$Y),t(ans$Z)) %>% as.data.frame()
-      # delete coloums between Y_t+s and Y_t
-      if ( s != 1){
-        del_col <- NULL
-        for (j in 1:nrow(ans$Y)) {
-          del_col <- c(del_col,paste(colnames(t(ans$Y))[j],'.',as.character(1:(s-1)), sep = ''))
-        }
-        regdata <- dplyr::select(regdata,-ends_with(del_col))
+      # panel data or not?
+      if (is.null(indx)){
+        regdata <- dt_gen(data, s = s, plag = i, yname = T)[['regdata']]
+        yname <- dt_gen(data, s = s, plag = i, yname = T)[['yname']]
+      }else {
+        ans <- dt_gen_panel(data, indx = indx,s = s, plag = i, yname = T)
+        regdata <- ans[['regdata']] %>% dplyr::select(-indx[1],-indx[2])
+        yname <- ans[['yname']]
       }
 
-      fml <- paste('fml <- cbind(',paste(colnames(t(ans$Y)),collapse = ','),')~.',sep = '')
+      fml <- paste('fml <- cbind(',paste(yname,collapse = ','),')~.',sep = '')
       eval(parse(text = fml))
       fit_rf[[i]] <- randomForestSRC::rfsrc(fml, data = regdata)
       # minimum OOB MSE
@@ -40,22 +53,21 @@ VARrf <- function(data, pmax = 5, p = NULL, s = 1){
       }
       mse_star[i] <- mean(mse)
     }
+    # browser()
     fit_rf <- fit_rf[[which.min(mse_star)]]
     p_sele <- which.min(mse_star)
   }else {
-    # generate X and Y
-    ans <- bvartools::gen_var(ts(data), p = s -1 + p, deterministic = 'none')
-    regdata <- cbind(t(ans$Y),t(ans$Z)) %>% as.data.frame()
-    # delete coloums between Y_t+s and Y_t
-    if ( s != 1){
-      del_col <- NULL
-      for (j in 1:nrow(ans$Y)) {
-        del_col <- c(del_col,paste(colnames(t(ans$Y))[j],'.',as.character(1:(s-1)), sep = ''))
-      }
-      regdata <- dplyr::select(regdata,-ends_with(del_col))
+    # panel data or not?
+    if (is.null(indx)){
+      regdata <- dt_gen(data, s = s, plag = p, yname = T)[['regdata']]
+      yname <- dt_gen(data, s = s, plag = p, yname = T)[['yname']]
+    }else {
+      ans <- dt_gen_panel(data,indx = indx, s = s, plag = p, yname = T)
+      regdata <- ans[['regdata']] %>% dplyr::select(-indx[1],-indx[2])
+      yname <- ans[['yname']]
     }
 
-    fml <- paste('fml <- cbind(',paste(colnames(t(ans$Y)),collapse = ','),')~.',sep = '')
+    fml <- paste('fml <- cbind(',paste(yname,collapse = ','),')~.',sep = '')
     eval(parse(text = fml))
     fit_rf <- randomForestSRC::rfsrc(fml, data = regdata)
     p_sele <- p

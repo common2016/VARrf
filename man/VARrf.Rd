@@ -4,12 +4,16 @@
 \alias{VARrf}
 \title{Estimate VAR by random forest}
 \usage{
-VARrf(data, pmax = 5, p = NULL, s = 1)
+VARrf(data, indx = NULL, pmax = 5, p = NULL, s = 1)
 }
 \arguments{
-\item{data}{a data.frame}
+\item{data}{a data.frame, and all variables is endogenous variables in VAR.}
 
-\item{pmax}{a max lag order}
+\item{indx}{if \code{data} is time series, \code{indx} is NULL. If \code{data}
+is panal data, \code{indx} is a character string vector whose length is 2, the 1st element
+is coloumn name of individual id, and the 2nd element is coloumn names of time.}
+
+\item{pmax}{a max lag order, default value is 5.}
 
 \item{p}{a fixed lag order. When \code{p} is set up, \code{pmax} is unuseful.}
 
@@ -25,4 +29,15 @@ and it has minimum OOB MSE in 1:\code{pmax}.}
 }
 \description{
 Estimate VAR by random forest
+}
+\examples{
+B1 <- matrix(c(0.2, 0.1, 0.2, 0.3,0.3,0.4,0.2,0.1), 2)
+sim_dt <- vars::VAR.sim(B1, n = 200, lag = 2,include = 'none',show.parMat = T) \%>\%
+  as.data.frame()
+  colnames(sim_dt) <- c('y1','y2')
+  # fit a VAR with max lag order equal 5
+  fit <- VARrf(sim_dt, pmax = 5)
+  # fit a VAR with fixed lag order equal 4
+  fit <- VARrf(sim_dt, p = 4)
+
 }

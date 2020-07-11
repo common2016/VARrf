@@ -1,19 +1,26 @@
-#' Compute IRF by random forest method
+#' Compute Local Projection IRF by Random Forest Method
 #'
 #' @param data
+#' @param indx if \code{data} is time series, \code{indx} is NULL. If \code{data}
+#' is panal data, \code{indx} is a character string vector whose length is 2, the 1st element
+#' is coloumn name of individual id, and the 2nd element is coloumn names of time.
 #' @param pmax max lag order where select a lag order which has minimum OOB MSE.
 #' @param set up the lag order directly, and don't select from \code{pmax}.
 #' @param s the horizon of IRF
 #' @param shockvar a numeric scalor which denotes the shock variable.
 #' @param d the size of shock
+#' Impulse Response Function by Random Forest
+#'
+#'
 #' @param hist the numerical scalor that represents the time of shock, i.e. row index
 #' of \code{data}.
 #'
 #' @export
-IRFrf <- function(data, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){
+IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){
   # initialize, and get yvar and shock var
-  fit <- VARrf(data = data, p = 1) # just for yvar
-  yvar <- names(fit$fit_rf$yvar)
+  yvar <- dt_gen(regdata = data, indx = indx, s = s, plag = p, yname = T)[['yname']] # just for yvar
+  # fit <- VARrf(data = data, p = 1)
+  # yvar <- names(fit$fit_rf$yvar)
   irf_bench <- matrix(NA, nrow = s, ncol = 1 + length(yvar)) %>% as.data.frame()
   names(irf_bench) <- c('s',yvar)
   irf_bench$s <- 1:s
@@ -22,7 +29,7 @@ IRFrf <- function(data, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime 
   for (j in 1:s){
     shockvar_med <- paste(yvar[shockvar],'.', as.character(j), sep = '')
 
-    fit <- VARrf(data = data, pmax = pmax, p = p, s = j)
+    fit <- VARrf(data = data, indx = indx, pmax = pmax, p = p, s = j)
     innov <- fit$fit_rf$xvar
     innov <- innov[histime,]
 
