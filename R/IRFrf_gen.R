@@ -1,6 +1,7 @@
 #' Generalized IRF
 #'
-#'
+#' @inheritParams
+#' @import foreach
 #' @export
 
 

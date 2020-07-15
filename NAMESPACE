@@ -3,4 +3,5 @@
 export(IRFrf)
 export(IRFrf_gen)
 export(VARrf)
+import(foreach)
 import(magrittr)
