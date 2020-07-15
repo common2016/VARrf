@@ -6,23 +6,18 @@
 
 
 IRFrf_gen <- function(data,pmax = 5, s = 12, d = 1,shockvar = 1,ncores = 6){
+  # browser()
   # para set up
-  itevar <- rep(list(data = data), nrow(data) - pmax)
   nhist <- nrow(data) - pmax - s # nrow of xvar
-  pmax_para <- rep(pmax,nhist)
-  s <- rep(s,nhist)
-  d <- rep(d,nhist)
-  shockvar <- rep(shockvar,nhist)
 
   # initialize
   cl <- parallel::makeCluster(ncores)
   doParallel::registerDoParallel(cl)
   # parallel compute
-  picdata <- foreach::foreach(i = 1:nhist,itevar = itevar,
-                              pmax = pmax_para,s = s, shockvar = shockvar,
-                              .packages = 'tidyverse') %dopar% {
-    devtools::load_all()
-    IRFrf(data = itevar, pmax = pmax, s = s, shockvar = shockvar,d = d, histime = i)
+  picdata <- foreach::foreach(i = 1:nhist,itevar = rep(list(data = data), nhist),dp = rep(d,nhist),
+                              pmaxp = rep(pmax,nhist),sp = rep(s,nhist), shockvarp = rep(shockvar,nhist),
+                              .packages = c('VARrf','tidyverse')) %dopar% {
+    IRFrf(data = itevar, pmax = pmaxp, s = sp, shockvar = shockvarp,d = dp, histime = i)
   }
   parallel::stopCluster(cl)
   return(picdata)
