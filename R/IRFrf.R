@@ -5,7 +5,7 @@
 #' is panal data, \code{indx} is a character string vector whose length is 2, the 1st element
 #' is coloumn name of individual id, and the 2nd element is coloumn names of time.
 #' @param pmax max lag order where select a lag order which has minimum OOB MSE.
-#' @param set up the lag order directly, and don't select from \code{pmax}.
+#' @param p set up the lag order directly, and don't select from \code{pmax}.
 #' @param s the horizon of IRF
 #' @param shockvar a numeric scalor which denotes the shock variable.
 #' @param d the size of shock
@@ -18,7 +18,8 @@
 #' @export
 IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){
   # initialize, and get yvar and shock var
-  yvar <- dt_gen(regdata = data, indx = indx, s = s, plag = p, yname = T)[['yname']] # just for yvar
+  # browser()
+  yvar <- dt_gen(regdata = data, indx = indx, s = s, plag = 1, yname = T)[['yname']] # just for yvar
   # fit <- VARrf(data = data, p = 1)
   # yvar <- names(fit$fit_rf$yvar)
   irf_bench <- matrix(NA, nrow = s, ncol = 1 + length(yvar)) %>% as.data.frame()

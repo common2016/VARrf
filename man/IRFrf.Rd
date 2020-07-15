@@ -22,14 +22,14 @@ is coloumn name of individual id, and the 2nd element is coloumn names of time.}
 
 \item{pmax}{max lag order where select a lag order which has minimum OOB MSE.}
 
+\item{p}{set up the lag order directly, and don't select from \code{pmax}.}
+
 \item{s}{the horizon of IRF}
 
 \item{shockvar}{a numeric scalor which denotes the shock variable.}
 
 \item{d}{the size of shock
 Impulse Response Function by Random Forest}
-
-\item{set}{up the lag order directly, and don't select from \code{pmax}.}
 
 \item{hist}{the numerical scalor that represents the time of shock, i.e. row index
 of \code{data}.}

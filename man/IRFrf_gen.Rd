@@ -4,7 +4,7 @@
 \alias{IRFrf_gen}
 \title{Generalized IRF}
 \usage{
-IRFrf_gen(data, pmax = 5, s = 12, shockvar = 1, ncores = 6)
+IRFrf_gen(data, pmax = 5, s = 12, d = 1, shockvar = 1, ncores = 6)
 }
 \description{
 Generalized IRF
