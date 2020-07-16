@@ -3,5 +3,7 @@
 export(IRFrf)
 export(IRFrf_gen)
 export(VARrf)
+export(draw_irf)
 import(foreach)
+import(ggplot2)
 import(magrittr)

@@ -10,10 +10,10 @@
 #' @param shockvar a numeric scalor which denotes the shock variable.
 #' @param d the size of shock
 #' Impulse Response Function by Random Forest
-#'
-#'
-#' @param hist the numerical scalor that represents the time of shock, i.e. row index
+#' @param histime the numerical scalor that represents the time of shock, i.e. row index
 #' of \code{data}.
+#' @examples
+#' # see VARrf function
 #'
 #' @export
 IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){

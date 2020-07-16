@@ -21,10 +21,10 @@ fit <- VARrf(sim_dt, p = 4)
 
 # 绘图LP
 picdata <- IRFrf(data = sim_dt, pmax = 5, s = 12, shockvar = 1)
-ggplot(data = picdata, aes(x = s, y = debt)) + geom_line() +
+ggplot(data = picdata, aes(x = s, y = y1)) + geom_line() +
   geom_hline(yintercept = 0) + theme_bw()
 
-IRFrf_gen(data = sim_dt[1:50,], pmax = 5, s = 5, shockvar = 1, ncores = 7)
+IRFrf_gen(data = sim_dt[1:20,], pmax = 3, s = 5, shockvar = 1, ncores = 7)
 
 # 广义脉冲响应的比较
 ar2ma(B1)

@@ -18,10 +18,17 @@
 #' sim_dt <- vars::VAR.sim(B1, n = 200, lag = 2,include = 'none',show.parMat = T) %>%
 #'   as.data.frame()
 #'   colnames(sim_dt) <- c('y1','y2')
-#'   # fit a VAR with max lag order equal 5
-#'   fit <- VARrf(sim_dt, pmax = 5)
-#'   # fit a VAR with fixed lag order equal 4
-#'   fit <- VARrf(sim_dt, p = 4)
+#' # fit a VAR with max lag order equal 5
+#' fit <- VARrf(sim_dt, pmax = 5)
+#' # fit a VAR with fixed lag order equal 4
+#' fit <- VARrf(sim_dt, p = 4)
+#' # IRF
+#' picdata <- IRFrf(data = sim_dt, pmax = 5, s = 12, shockvar = 1)
+#' ggplot(data = picdata, aes(x = s, y = y1)) + geom_line() +
+#'   geom_hline(yintercept = 0) + theme_bw()
+#' # Generalized IRF
+#' IRFrf_gen(data = sim_dt[1:20,], pmax = 3, s = 5, shockvar = 1, ncores = 7)
+#'
 #'
 #' @export
 #' @import magrittr

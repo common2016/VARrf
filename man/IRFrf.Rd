@@ -31,9 +31,13 @@ is coloumn name of individual id, and the 2nd element is coloumn names of time.}
 \item{d}{the size of shock
 Impulse Response Function by Random Forest}
 
-\item{hist}{the numerical scalor that represents the time of shock, i.e. row index
+\item{histime}{the numerical scalor that represents the time of shock, i.e. row index
 of \code{data}.}
 }
 \description{
 Compute Local Projection IRF by Random Forest Method
+}
+\examples{
+# see VARrf function
+
 }
