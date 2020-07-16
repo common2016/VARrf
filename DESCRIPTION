@@ -17,4 +17,7 @@ RoxygenNote: 7.1.0
 Imports: 
     bvartools,
     randomForestSRC,
-    patchwork
+    patchwork,
+    foreach,
+    ggplot2,
+    magrittr

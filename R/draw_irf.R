@@ -6,7 +6,7 @@
 #' @param ncol_pic multiple pictures are arranged \code{ncol_pic} coloumns
 #' @examples
 #'
-#' @import ggplot2
+#' @import ggplot2 patchwork
 #' @export
 
 draw_irf <- function(irf, res_var, ncol_pic = 2){
