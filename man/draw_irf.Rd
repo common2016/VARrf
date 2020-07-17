@@ -4,7 +4,7 @@
 \alias{draw_irf}
 \title{Draw IRF}
 \usage{
-draw_irf(irf, res_var, ncol_pic = 2)
+draw_irf(irf, res_var, ncol_pic = 2, ci = 0.9)
 }
 \arguments{
 \item{irf}{a returned objective from \code{IRFrf_gen}}
@@ -12,6 +12,9 @@ draw_irf(irf, res_var, ncol_pic = 2)
 \item{res_var}{a string vector composed with names of response variable}
 
 \item{ncol_pic}{multiple pictures are arranged \code{ncol_pic} coloumns}
+
+\item{ci}{confidence interval, default is 0.9, and if it's NULL, don't draw
+confidence interval.}
 }
 \description{
 draw IRF picture according to results from \code{IRFrf_gen}
