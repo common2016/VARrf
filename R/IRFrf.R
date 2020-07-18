@@ -18,7 +18,7 @@
 #' @export
 IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d = 1,histime = 1){
   # initialize, and get yvar and shock var
-  # browser()
+  browser()
   yvar <- dt_gen(regdata = data, indx = indx, s = s, plag = 1, yname = T)[['yname']] # just for yvar
   # fit <- VARrf(data = data, p = 1)
   # yvar <- names(fit$fit_rf$yvar)
@@ -35,9 +35,9 @@ IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d 
     innov <- innov[histime,]
 
     # get d_i
-    innov[,shockvar_med] <- 0
+    # innov[,shockvar_med] <- 0
     bench <- innov
-    innov[,shockvar_med] <- d
+    innov[,shockvar_med] <- innov[,shockvar_med] + d
 
     # E[y|d_i=1] - E[y_i|d_i=0]
     for (i in yvar) {

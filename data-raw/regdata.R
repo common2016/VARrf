@@ -18,6 +18,8 @@ fit <- vars::VAR(sim_dt, p = 2,type = 'none')
 fit <- VARrf(sim_dt)
 fit <- VARrf(sim_dt, p = 4)
 
+# IRF_mt
+VARrf_forcast(fit = fit$fit_rf, s = 12, n_eps = 2)
 
 # 绘图LP
 picdata <- IRFrf(data = sim_dt, pmax = 5, s = 12, shockvar = 1)

@@ -17,5 +17,5 @@ Impulse Response Function by Random Forest}
 \item{shockvar}{a numeric scalor which denotes the shock variable.}
 }
 \description{
-Generalized IRF
+GIRF using LP method by
 }

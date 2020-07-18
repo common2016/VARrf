@@ -1,11 +1,12 @@
 #' Generalized IRF
 #'
+#' @description GIRF using LP method by
 #' @inheritParams IRFrf
 #' @import foreach
 #' @export
 
 IRFrf_gen <- function(data,pmax = 5, s = 12, d = 1,shockvar = 1,ncores = 6){
-  # browser()
+
   # para set up
   nhist <- nrow(data) - pmax - s # nrow of xvar
 

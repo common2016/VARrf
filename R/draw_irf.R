@@ -14,7 +14,7 @@
 draw_irf <- function(irf, res_var, ncol_pic = 2, ci = 0.9){
   ans <- lapply(irf, reshape2::melt, id.vars = 's')
   ans <- bind_rows(ans)
-  dw <- (1-0.9)/2 # quantile
+  dw <- (1 - ci)/2 # quantile
   picdata <- group_by(ans, s, variable) %>% summarise(v50 = median(value),
                                                       v025 = quantile(value, dw),
                                                       v975 = quantile(value, 1-dw))
