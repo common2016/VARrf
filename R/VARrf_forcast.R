@@ -9,9 +9,15 @@
 #' @param d size of shock, default value is 1.
 #' @param n_eps
 #'
-#' @note de-mean each variable
-#' @details
-#'
+#' @note each variable is de-meaned
+#' @details algorithm as follow:
+#'\enumerate{
+#'   \item step 1, estimate the model, and get the residuals
+#'   \eqn{\hat{e}_1,\cdots,\hat{e}_T}.
+#'   \item step 2, simulate the model for \code{s} horizons with \code{s}
+#'   residuals are randomly drawn from
+#'   \item step 3,
+#'}
 #' @return a list with 2 elements, the 1st elements is a forcast with no shock, and
 #' the 2nd element is a forcast with shock.
 
@@ -35,7 +41,7 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
     # the 1st horizon
     if (j == 1){
       # haty with no epsilon
-      bench_fst[j,] <- predict(fit, newdata = stvalue_bench) %>%
+      bench_fst[j,] <- randomForestSRC::predict.rfsrc(fit, newdata = stvalue_bench) %>%
         randomForestSRC::get.mv.predicted()
 
       shock <- matrix(0, nrow = 1, ncol = ncol(eps)) %>% as.data.frame()
@@ -46,10 +52,10 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
     }else {
       # other horizons
       ans <- eps[sample(1:nrow(eps),1),]
-      bench_fst[j,] <- randomForestSRC::predict(fit, newdata = stvalue_bench) %>%
+      bench_fst[j,] <- randomForestSRC::predict.rfsrc(fit, newdata = stvalue_bench) %>%
         randomForestSRC::get.mv.predicted() %>%
         magrittr::add(ans)
-      shock_fst[j,] <- randomForestSRC::predict(fit, newdata = stvalue_shock) %>%
+      shock_fst[j,] <- randomForestSRC::predict.rfsrc(fit, newdata = stvalue_shock) %>%
         randomForestSRC::get.mv.predicted() %>%
         magrittr::add(ans)
     }
