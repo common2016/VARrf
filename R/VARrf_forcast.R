@@ -29,6 +29,7 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
   pmax <- str_split_fixed(names(stvalue_bench),'\\.',2)[,2] %>% as.numeric() %>%
     max()
   yname <- str_split_fixed(names(stvalue_bench),'\\.',2)[,1] %>% unique()
+  # browser()
 
   for (j in 1:s) {
     # the 1st horizon
@@ -52,14 +53,19 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
     }
 
     # update stvalue_bench, stvalue_shock
-    for (i in seq(pmax,2,-1)) {
-      stvalue_bench[,paste(yname,as.character(i),sep = '.')] <-
-        stvalue_bench[,paste(yname,as.character(i-1),sep = '.')]
-      stvalue_shock[,paste(yname,as.character(i),sep = '.')] <-
-        stvalue_shock[,paste(yname,as.character(i-1),sep = '.')]
+    if (pmax >= 2){ # lag order is larger than 2
+      for (i in seq(pmax,2,-1)) {
+        stvalue_bench[,paste(yname,as.character(i),sep = '.')] <-
+          stvalue_bench[,paste(yname,as.character(i-1),sep = '.')]
+        stvalue_shock[,paste(yname,as.character(i),sep = '.')] <-
+          stvalue_shock[,paste(yname,as.character(i-1),sep = '.')]
+      }
     }
     stvalue_bench[,paste(yname,'1',sep = '.')] <- bench_fst[j,]
     stvalue_shock[,paste(yname,'1',sep = '.')] <- shock_fst[j,]
   }
-  return(list(bench_fst = bench_fst, shock_fst = shock_fst))
+  irf <- shock_fst - bench_fst
+  irf$s <- 1:s
+  # shock_fst$s <- bench_fst$s <- 1:s
+  return(irf = irf)
 }

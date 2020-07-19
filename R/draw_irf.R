@@ -8,7 +8,6 @@
 #' confidence interval.
 #' @examples
 #'
-#' @import ggplot2 patchwork
 #' @export
 
 draw_irf <- function(irf, res_var, ncol_pic = 2, ci = 0.9){
@@ -22,14 +21,17 @@ draw_irf <- function(irf, res_var, ncol_pic = 2, ci = 0.9){
   pcode <- 'p[[1]]'
   for (i in 1:length(res_var)) {
     if (!is.null(ci)){
-      p[[res_var[i]]] <- ggplot(picdata[picdata$variable %in% res_var[i],], aes(x = s , y = v50)) +
-        geom_line(aes(y = v025), linetype = 2) +
-        geom_line(aes(y = v975), linetype = 2)
+      p[[res_var[i]]] <- ggplot2::ggplot(picdata[picdata$variable %in% res_var[i],],
+                                         ggplot2::aes_string(x = 's' , y = 'v50')) +
+        ggplot2::geom_line(ggplot2::aes_string(y = 'v025'), linetype = 2) +
+        ggplot2::geom_line(ggplot2::aes_string(y = 'v975'), linetype = 2)
     }else {
-      p[[res_var[i]]] <- ggplot(picdata[picdata$variable %in% res_var[i],], aes(x = s , y = v50))
+      p[[res_var[i]]] <- ggplot2::ggplot(picdata[picdata$variable %in% res_var[i],],
+                                         ggplot2::aes_string(x = 's' , y = 'v50'))
     }
-    p[[res_var[i]]] <- p[[res_var[i]]] + geom_hline(yintercept = 0) + labs(title = res_var[i]) +
-      geom_line() + theme_bw()
+    p[[res_var[i]]] <- p[[res_var[i]]] + ggplot2::geom_hline(yintercept = 0) +
+      ggplot2::labs(title = res_var[i]) +
+      ggplot2::geom_line() + ggplot2::theme_bw()
     if (i != 1) pcode <- paste(pcode, '+p[[',as.character(i),']]',sep = '')
     if (i == length(res_var)) pcode <- paste('ans <- ',pcode, '+ patchwork::plot_layout(ncol =',
                                              as.character(ncol_pic),')', sep = '')

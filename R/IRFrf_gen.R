@@ -2,7 +2,7 @@
 #'
 #' @description GIRF using LP method by
 #' @inheritParams IRFrf
-#' @import foreach
+#' @importFrom  foreach `%dopar%`
 #' @export
 
 IRFrf_gen <- function(data,pmax = 5, s = 12, d = 1,shockvar = 1,ncores = 6){

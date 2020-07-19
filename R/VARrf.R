@@ -31,7 +31,7 @@
 #'
 #'
 #' @export
-#' @import magrittr
+#' @importFrom librmagrittr `%>%`
 
 
 VARrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 1){
