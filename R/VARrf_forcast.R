@@ -17,7 +17,7 @@
 
 VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, n_eps = 1){
   # initialize
-  eps <- fit$yvar - get.mv.predicted(fit)
+  eps <- fit$yvar - randomForestSRC::get.mv.predicted(fit)
   stvalue_shock <- stvalue_bench <- fit$xvar[nrow(fit$xvar),]
   if (!is.null(startvalue)){
     stvalue_shock[1,] <- stvalue_bench[1,] <- startvalue
@@ -36,7 +36,7 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
     if (j == 1){
       # haty with no epsilon
       bench_fst[j,] <- predict(fit, newdata = stvalue_bench) %>%
-        get.mv.predicted()
+        randomForestSRC::get.mv.predicted()
 
       shock <- matrix(0, nrow = 1, ncol = ncol(eps)) %>% as.data.frame()
       shock[,shockvar] <- d
@@ -46,10 +46,12 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
     }else {
       # other horizons
       ans <- eps[sample(1:nrow(eps),1),]
-      bench_fst[j,] <- predict(fit, newdata = stvalue_bench) %>% get.mv.predicted() %>%
-        add(ans)
-      shock_fst[j,] <- predict(fit, newdata = stvalue_shock) %>% get.mv.predicted() %>%
-        add(ans)
+      bench_fst[j,] <- randomForestSRC::predict(fit, newdata = stvalue_bench) %>%
+        randomForestSRC::get.mv.predicted() %>%
+        magrittr::add(ans)
+      shock_fst[j,] <- randomForestSRC::predict(fit, newdata = stvalue_shock) %>%
+        randomForestSRC::get.mv.predicted() %>%
+        magrittr::add(ans)
     }
 
     # update stvalue_bench, stvalue_shock

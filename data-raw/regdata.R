@@ -19,7 +19,8 @@ fit <- VARrf(sim_dt)
 fit <- VARrf(sim_dt, p = 4)
 
 # IRF_mt
-VARrf_forcast(fit = fit$fit_rf, s = 12, n_eps = 2)
+VARrf_forcast(fit = fit, s = 12, n_eps = 2)
+IRFrf_mt(fit, shock_varnm, s = 12, n = 10, ncores = 7)
 
 # 绘图LP
 picdata <- IRFrf(data = sim_dt, pmax = 5, s = 12, shockvar = 1)
