@@ -42,9 +42,9 @@ IRFrf <- function(data,indx = NULL, pmax = 5, p = NULL, s = 12, shockvar = 1, d 
     # E[y|d_i=1] - E[y_i|d_i=0]
     for (i in yvar) {
       irf_bench[irf_bench$s == j, i] <-
-        predict(fit$fit_rf, newdata = bench)[['regrOutput']][[i]][['predicted']]
+        randomForestSRC::predict.rfsrc(fit$fit_rf, newdata = bench)[['regrOutput']][[i]][['predicted']]
       irf_innov[irf_innov$s == j, i] <-
-        predict(fit$fit_rf, newdata = innov)[['regrOutput']][[i]][['predicted']]
+        randomForestSRC::predict.rfsrc(fit$fit_rf, newdata = innov)[['regrOutput']][[i]][['predicted']]
       irf_diff[irf_innov$s == j, i] <- irf_innov[irf_innov$s == j, i] - irf_bench[irf_innov$s == j, i]
     }
   }
