@@ -7,7 +7,8 @@ IRFrf_mt <- function(fit, shock_varnm, s = 12,
                      n = 10, ncores = 7){
   # browser()
   shockvar <- which(names(fit$yvar) %in% shock_varnm)
-  d <- sd(unlist(fit$yvar[shockvar]))
+  # d <- sd(unlist(fit$yvar[shockvar]))
+  d <- 1
   nx <- 1:nrow(fit$xvar)
 
   # initialize

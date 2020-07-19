@@ -45,10 +45,14 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
         randomForestSRC::get.mv.predicted()
 
       shock <- matrix(0, nrow = 1, ncol = ncol(eps)) %>% as.data.frame()
-      shock[,shockvar] <- d
+      shock[1,shockvar] <- d
+
+      # stvalue_bench <- stvalue_bench + eps[sample(1:nrow(eps),1),]
+      # stvalue_shock <- stvalue_bench + eps[n_eps,] + shock
+
       # haty with epsilon
-      shock_fst[j,] <- bench_fst[j,] + eps[n_eps,] + shock
       bench_fst[j,] <- bench_fst[j,] + eps[sample(1:nrow(eps),1),]
+      shock_fst[j,] <- bench_fst[j,] + eps[n_eps,] + shock
     }else {
       # other horizons
       ans <- eps[sample(1:nrow(eps),1),]
