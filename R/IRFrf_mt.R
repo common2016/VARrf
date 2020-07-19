@@ -1,3 +1,6 @@
+#' GIRF
+#'
+#' Compute GIRF by Martin (2011)
 #'
 
 IRFrf_mt <- function(fit, shock_varnm, s = 12,
