@@ -53,6 +53,7 @@ VARrf_forcast <- function(fit, s = 12, startvalue = NULL,  shockvar = 1, d = 1, 
       # haty with epsilon
       bench_fst[j,] <- bench_fst[j,] + eps[sample(1:nrow(eps),1),]
       shock_fst[j,] <- bench_fst[j,] + eps[n_eps,] + shock
+      # shock_fst[j,] <- bench_fst[j,] + shock
     }else {
       # other horizons
       ans <- eps[sample(1:nrow(eps),1),]
